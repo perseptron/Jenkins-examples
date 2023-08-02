@@ -24,8 +24,7 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                sh 'docker rm -f nodemain:v1.0'
-                sh 'docker build -t nodemain:v1.0'
+                sh 'docker build -t nodemain:v1.0 .'
             }
         }
         stage('Deploy') {
