@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-                git url: 'https://github.com/perseptron/cicd-pipeline', branch: 'main'
+                git url: 'https://github.com/perseptron/cicd-pipeline'
             }
         }
         stage('Build') {
@@ -22,17 +22,26 @@ pipeline {
         stage('Docker build') {
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'main') {
-                        echo 'main'
-                    }
+                   if (env.BRANCH_NAME == 'main' ) { 
+                       sh 'docker build -t nodemain:v1.0 .'
+                   } else if (env.BRANCH_NAME == 'dev' ) {
+                       sh 'mv src/tmp.svg src/logo.svg'
+                       sh 'docker build -t nodedev:v1.0 .'
+                   }
                 }
-                sh 'docker build -t nodemain:v1.0 .'
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker rm -f nodemain'
-                sh 'docker run -d --name nodemain -p 3000:3000 nodemain:v1.0'
+                script {
+                    if (env.BRANCH_NAME == 'main' ) {
+                        sh 'docker rm -f nodemain' 
+                        sh 'docker run -d --name nodemain -p 3000:3000 nodemain:v1.0'
+                    } else if (env.BRANCH_NAME == 'dev' ) {
+                        sh 'docker rm -f nodedev' 
+                        sh 'docker run -d --name nodedev -p 3001:3000 nodedev:v1.0'
+                    }
+                }
             }
         }
     }
