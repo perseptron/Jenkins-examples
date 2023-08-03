@@ -1,19 +1,17 @@
 pipeline {
     agent any
-    environment {
-        branch="${env.BRANCH_NAME}"
-        script {
-            if ( ${branch} == 'main' ) {
-                img='nodemain'
-                port=3000
-                file='logo.svg'
-            } else {
-                img='nodedev'
-                port=3001
-                file='tmp.svg'
+    script {
+        if ( ${env.BRANCH_NAME} == 'main' ) {
+            img='nodemain'
+            port=3000
+            file='logo.svg'
+        } else {
+            img='nodedev'
+            port=3001
+            file='tmp.svg'
             }
         }
-    }
+    
     
     tools {
         nodejs 'node'
