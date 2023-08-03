@@ -1,22 +1,20 @@
 pipeline {
     agent any
-    script {
-        if ( ${env.BRANCH_NAME} == 'main' ) {
-            img='nodemain'
-            port=3000
-            file='logo.svg'
-        } else {
-            img='nodedev'
-            port=3001
-            file='tmp.svg'
-            }
-        }
-    
-    
     tools {
         nodejs 'node'
     }
     stages {
+        script {
+                if ( ${env.BRANCH_NAME} == 'main' ) {
+                    img='nodemain'
+                    port=3000
+                    file='logo.svg'
+                } else {
+                    img='nodedev'
+                    port=3001
+                    file='tmp.svg'
+                }
+        }
         stage('Checkout SCM') {
             steps {
                 echo "Current branch: ${branch}"
@@ -28,7 +26,6 @@ pipeline {
                 sh 'npm install'
             }
         }
-        
         stage('Test') {
             steps {
                 sh 'npm test'
