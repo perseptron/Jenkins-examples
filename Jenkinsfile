@@ -31,18 +31,5 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                script {
-                    if ( ${env.BRANCH_NAME} == 'main' ) {
-                        sh 'docker rm -f nodemain' 
-                        sh 'docker run -d --name nodemain -p 3000:3000 nodemain:v1.0'
-                    } else if ( ${env.BRANCH_NAME} == 'dev' ) {
-                        sh 'docker rm -f nodedev' 
-                        sh 'docker run -d --name nodedev -p 3001:3000 nodedev:v1.0'
-                    }
-                }
-            }
-        }
     }
 }
