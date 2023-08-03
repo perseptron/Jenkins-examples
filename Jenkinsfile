@@ -4,17 +4,6 @@ pipeline {
         nodejs 'node'
     }
     stages {
-        script {
-                if ( ${env.BRANCH_NAME} == 'main' ) {
-                    img='nodemain'
-                    port=3000
-                    file='logo.svg'
-                } else {
-                    img='nodedev'
-                    port=3001
-                    file='tmp.svg'
-                }
-        }
         stage('Checkout SCM') {
             steps {
                 echo "Current branch: ${branch}"
@@ -33,14 +22,27 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                sh 'mv src/${file} src/logo.svg'
-                sh 'docker build -t ${img}:v1.0 .'
+                script {
+                   if ( ${env.BRANCH_NAME} == 'main' ) { 
+                       sh 'docker build -t nodemain:v1.0 .'
+                   } else if ( ${env.BRANCH_NAME} == 'dev' ) {
+                       sh 'mv src/tmp.svg src/logo.svg'
+                       sh 'docker build -t nodedev:v1.0 .'
+                   }
+                }
             }
         }
         stage('Deploy') {
             steps {
-                sh 'docker rm -f ${img}:'
-                sh 'docker run -d --name ${img} -p ${port}:3000 ${img}:v1.0'
+                script {
+                    if ( ${env.BRANCH_NAME} == 'main' ) {
+                        sh 'docker rm -f nodemain' 
+                        sh 'docker run -d --name nodemain -p 3000:3000 nodemain:v1.0'
+                    } else if ( ${env.BRANCH_NAME} == 'dev' ) {
+                        sh 'docker rm -f nodedev' 
+                        sh 'docker run -d --name nodedev -p 3001:3000 nodedev:v1.0'
+                    }
+                }
             }
         }
     }
