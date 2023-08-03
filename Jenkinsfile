@@ -1,13 +1,15 @@
 pipeline {
     agent any
+    environment {
+        branch="${env.BRANCH_NAME}"
+    }
     tools {
         nodejs 'node'
     }
-
     stages {
         stage('Checkout SCM') {
             steps {
-                echo "Current branch: ${env.BRANCH_NAME}"
+                echo "Current branch: ${branch}"
                 git url: 'https://github.com/perseptron/cicd-pipeline', branch: 'main'
             }
         }
