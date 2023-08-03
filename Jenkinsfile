@@ -29,6 +29,8 @@ pipeline {
                        imgname='nodedev'
                    }
                 }
+                echo "imgname =  ${imgname}"
+                echo "env.BRANCH_NAME = ${env.BRANCH_NAME}" 
                 sh 'docker build -t ${imgname}:v1.0 .'
             }
         }
