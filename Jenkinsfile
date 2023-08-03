@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                sh 'mv src/${file} src/logo.svg
+                sh 'mv src/${file} src/logo.svg'
                 sh 'docker build -t ${img}:v1.0 .'
             }
         }
