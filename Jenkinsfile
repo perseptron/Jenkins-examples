@@ -24,8 +24,6 @@ pipeline {
                 script {
                     if ( ${env.BRANCH_NAME} == 'main' ) {
                         echo 'main'
-                    } else if ( ${env.BRANCH_NAME} == 'dev' ) {
-                        echo 'dev'
                     }
                 }
                 sh 'docker build -t nodemain:v1.0 .'
