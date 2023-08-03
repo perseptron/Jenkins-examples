@@ -1,8 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs '7.8.0'
-        dockerTool 'latest'
+        nodejs 'node'
     }
 
     stages {
