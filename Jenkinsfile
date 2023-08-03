@@ -23,12 +23,12 @@ pipeline {
             steps {
                 script {
                     if ( ${env.BRANCH_NAME} == 'main' ) {
-                        imgname='nodemain'
+                        echo 'main'
                     } else if ( ${env.BRANCH_NAME} == 'dev' ) {
-                        imgname='nodedev'
+                        echo 'dev'
                     }
                 }
-                sh 'docker build -t ${imgname}:v1.0 .'
+                sh 'docker build -t nodemain:v1.0 .'
             }
         }
         stage('Deploy') {
