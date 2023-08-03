@@ -3,7 +3,7 @@ pipeline {
     environment {
         branch="${env.BRANCH_NAME}"
         script {
-            if ( if ${branch} == 'main' ) {
+            if ( ${branch} == 'main' ) {
                 img='nodemain'
                 port=3000
                 file='logo.svg'
