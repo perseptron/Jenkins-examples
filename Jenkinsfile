@@ -22,7 +22,7 @@ pipeline {
         stage('Docker build') {
             steps {
                 script {
-                    if (${env.BRANCH_NAME} == 'main') {
+                    if (env.BRANCH_NAME == 'main') {
                         echo 'main'
                     }
                 }
