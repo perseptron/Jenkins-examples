@@ -44,8 +44,8 @@ pipeline {
                         imgname='nodedev'
                         port=3001
                     }
-                    sh 'docker rm -f ${imgname}' 
-                    sh 'docker run -d --name ${imgname} -p ${port}:3000 ${imgname}:v1.0'
+                    sh "docker rm -f ${imgname}" 
+                    sh "docker run -d --name ${imgname} -p ${port}:3000 ${imgname}:v1.0"
                 }
             }
         }
