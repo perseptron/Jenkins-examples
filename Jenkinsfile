@@ -7,6 +7,7 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
+                echo "Current branch: ${env.BRANCH_NAME}"
                 git url: 'https://github.com/perseptron/cicd-pipeline', branch: 'main'
             }
         }
@@ -28,7 +29,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'docker run -d -p 3000:3000 nodemain:v1.0'
+                sh 'docker rm -f nodemain:'
+                sh 'docker run -d --name nodemain -p 3000:3000 nodemain:v1.0'
             }
         }
     }
