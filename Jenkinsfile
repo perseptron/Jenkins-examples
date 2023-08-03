@@ -26,6 +26,7 @@ pipeline {
                         imgname='nodemain'
                     } else if ( ${env.BRANCH_NAME} == 'dev' ) {
                         imgname='nodedev'
+                    }
                 }
                 sh 'docker build -t ${imgname}:v1.0 .'
             }
