@@ -23,24 +23,27 @@ pipeline {
             steps {
                 script {
                    if (env.BRANCH_NAME == 'main' ) { 
-                       sh 'docker build -t nodemain:v1.0 .'
+                       imgname='nodemain'
                    } else if (env.BRANCH_NAME == 'dev' ) {
                        sh 'mv src/tmp.svg src/logo.svg'
-                       sh 'docker build -t nodedev:v1.0 .'
+                       imgname='nodedev'
                    }
                 }
+                sh 'docker build -t ${imgname}:v1.0 .'
             }
         }
         stage('Deploy') {
             steps {
                 script {
                     if (env.BRANCH_NAME == 'main' ) {
-                        sh 'docker rm -f nodemain' 
-                        sh 'docker run -d --name nodemain -p 3000:3000 nodemain:v1.0'
+                        imgname='nodemain'
+                        port=3000
                     } else if (env.BRANCH_NAME == 'dev' ) {
-                        sh 'docker rm -f nodedev' 
-                        sh 'docker run -d --name nodedev -p 3001:3000 nodedev:v1.0'
+                        imgname='nodedev'
+                        port=3001
                     }
+                    sh 'docker rm -f ${imgname}' 
+                    sh 'docker run -d --name ${imgname} -p ${port}:3000 ${imgname}:v1.0'
                 }
             }
         }
