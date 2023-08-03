@@ -31,7 +31,7 @@ pipeline {
                 }
                 echo "imgname =  ${imgname}"
                 echo "env.BRANCH_NAME = ${env.BRANCH_NAME}" 
-                sh 'docker build -t ${imgname} .'
+                sh "docker build -t ${imgname} ."
             }
         }
         stage('Deploy') {
