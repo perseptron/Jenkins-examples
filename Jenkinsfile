@@ -6,7 +6,6 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-                echo "Current branch: ${branch}"
                 git url: 'https://github.com/perseptron/cicd-pipeline'
             }
         }
