@@ -1,7 +1,8 @@
 # Task:
 Setting up a Multibranch pipeline and regular Jenkins pipelines with manual or auto triggers for deploying an application.
 
-Objective:
+# Objective:
+
 The objective of this task is to train systems engineers to set up a Multibranch pipeline and a Manual pipeline for deploying an application with different ports depending on envs and changing logo.svg files depending on envs (branch name) as well. The engineers will learn how to create two branches - main and dev, in GIT these branches will be in envs role as well, configure stages for checkout, build, test, build docker image, and deploy, and make changes to the picture and ports for each branch.
 
 # Details:
