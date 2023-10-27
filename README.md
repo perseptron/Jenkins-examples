@@ -31,5 +31,5 @@ Click the arrows to see more information.
      for main branch docker run -d –expose 3000 -p 3000:3000 nodemain:v1.0
      for dev branch docker run -d –expose 3001 -p 3001:3000 nodedev:v1.0.
 7.  "Create a new pipeline called CD_deploy_manual, which should be used for manually deploying to either the 'main' or 'dev' environment. Since we do not have separate environments, 'main' and 'dev' branches are used to imitate real environments with different application versions. This pipeline should include two parameters:
-  * 'main/dev', to specify the target environment
-  * 'Image tag', to specify the tag of the Docker image to be deployed."
+   * 'main/dev', to specify the target environment
+   * 'Image tag', to specify the tag of the Docker image to be deployed."
