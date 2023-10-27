@@ -1,0 +1,48 @@
+pipeline {
+agent any
+parameters {
+string(name: 'BRANCH', defaultValue: 'main', description: 'Specify the branch to build')
+string(name: 'TAG', defaultValue: '1.0', description: 'Specify the docker image tag')
+}
+tools {
+nodejs 'node' }
+stages {
+stage('Checkout SCM') {
+steps {
+git url: 'https://github.com/perseptron/cicd-pipeline', branch: "${params.BRANCH}"
+}
+}
+stage('Build') {
+steps {
+sh 'npm install' }
+}
+stage('Test') {
+steps {
+sh 'npm test' }
+}
+stage('Docker build') {
+steps {
+script {
+if (params.BRANCH == 'main' ) {
+imgname='nodemain' } else if (params.BRANCH == 'dev' ) {
+sh 'mv src/tmp.svg src/logo.svg' imgname='nodedev' }
+}
+sh "docker build -t ${imgname}:${params.TAG} ."
+}
+}
+stage('Deploy') {
+steps {
+script {
+if (params.BRANCH == 'main' ) {
+imgname='nodemain' port=3000
+} else if (params.BRANCH == 'dev' ) {
+imgname='nodedev' port=3001
+}
+sh "docker rm -f ${imgname}"
+sh "docker run -d --name ${imgname} -p ${port}:3000
+${imgname}:${params.TAG}"
+}
+}
+}
+}
+}
