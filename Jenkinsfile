@@ -2,6 +2,7 @@
 pipeline {
     environment{
         registry="perseptron"
+	TAG="v1.0"
     }
     agent any
     tools {
@@ -43,17 +44,17 @@ pipeline {
             steps {
                 script {
                    if (env.BRANCH_NAME == 'main' ) { 
-                       imgname='nodemain:v1.0'
+                       imgname='nodemain'
                    } else if (env.BRANCH_NAME == 'dev' ) {
                        sh 'mv src/tmp.svg src/logo.svg'
-                       imgname='nodedev:v1.0'
+                       imgname='nodedev'
                    }
                 }
                 echo "imgname =  ${imgname}"
                 echo "env.BRANCH_NAME = ${env.BRANCH_NAME}"
                 sh "docker rm -f ${imgname}"
-                sh "docker rmi -f ${registry}/${imgname}:${params.TAG}" 
-                sh "docker build -t ${registry}/${imgname}:${params.TAG} ."
+                sh "docker rmi -f ${registry}/${imgname}:${TAG}" 
+                sh "docker build -t ${registry}/${imgname}:${TAG} ."
             }
         }
 
@@ -61,7 +62,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'c14811cd-90a9-4099-b6b9-fcce7e24acb1', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                         sh "docker login -u $USER -p $PASS"
-                        sh "docker push ${registry}/${imgname}:${params.TAG}"
+                        sh "docker push ${registry}/${imgname}:${TAG}"
                     }
             }
         }
@@ -76,7 +77,7 @@ pipeline {
                         imgname='nodedev'
                         port=3001
                     }
-                    sh "docker run -d --name ${imgname} -p ${port}:3000 ${registry}/${imgname}:${params.TAG}"
+                    sh "docker run -d --name ${imgname} -p ${port}:3000 ${registry}/${imgname}:${TAG}"
                 }
             }
         }
@@ -84,7 +85,7 @@ pipeline {
         stage('Vulnerability scan'){
             steps {
                 script{
-                    def vulnerabilities = sh(script: "trivy image --exit-code 0 --severity HIGH,MEDIUM,LOW --no-progress ${registry}/${imgname}:${params.TAG}", returnStdout: true).trim()
+                    def vulnerabilities = sh(script: "trivy image --exit-code 0 --severity HIGH,MEDIUM,LOW --no-progress ${registry}/${imgname}:${TAG}", returnStdout: true).trim()
                     writeFile file: 'vulnerabilities.txt', text: vulnerabilities
                 }
             }
