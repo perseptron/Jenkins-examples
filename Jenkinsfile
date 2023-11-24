@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout SCM') {
             steps {
-                git url: 'https://github.com/perseptron/cicd-pipeline', branch: 'main'
+                git url: 'https://github.com/perseptron/Jenkins-examples', branch: 'main'
             }
         }
         stage('Build') {
