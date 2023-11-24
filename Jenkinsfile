@@ -1,4 +1,4 @@
-# CICD pipeline
+// CICD pipeline
 pipeline {
     agent any
     tools {
